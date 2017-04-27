@@ -5,6 +5,7 @@
 int ReadKeyboard ();
 void GenerateValues(int**,int);
 void CalcNewArray(int**,int**,int);
+void createMate(int ***, int);
 
 int main(void)
 {
@@ -13,42 +14,9 @@ int main(void)
 
     ArraySize=ReadKeyboard();
 
-    arraypp=malloc(ArraySize*sizeof(int*));
-    if(arraypp==NULL)
-    {
-        fprintf(stderr,"out of memory\n");
-        exit(-1);
-    }
-
-    for(int i=0; i<ArraySize; i++)
-    {
-        arraypp[i]=malloc(ArraySize*sizeof(int));
-
-        if(arraypp[i]==NULL)
-        {
-            fprintf(stderr,"out of memory\n");
-            exit(-1);
-        }
-    }
-
-    GenerateValues(arraypp,ArraySize);
-
-    newarray=malloc(ArraySize*sizeof(int*));
-    if(newarray==NULL)
-    {
-        fprintf(stderr,"out of memory\n");
-        exit(-1);
-    }
-    for(int i=0; i<ArraySize; i++)
-    {
-        newarray[i]=malloc(ArraySize*sizeof(int));
-
-        if(newarray[i]==NULL)
-        {
-            fprintf(stderr,"out of memory\n");
-            exit(-1);
-        }
-    }
+    createMate(&arraypp, ArraySize);
+    GenerateValues(arraypp, ArraySize);
+    createMate(&newarray, ArraySize);
     CalcNewArray(arraypp,newarray,ArraySize);
     return EXIT_SUCCESS;
 }
@@ -81,7 +49,7 @@ void GenerateValues(int** array, int size)
         {
             value=random()%8+1;
             array[i][j]=value;
-            printf("  %d  ", array[i][j]);
+            printf("  %2d  ", array[i][j]);
         }
         printf("\n\n");
     }
@@ -99,9 +67,30 @@ void CalcNewArray(int** array,int** newarray,int size)
     {   printf("\n\n");
         for(int j=0; j<size; j++)
         {
-            printf("  %d  ", newarray[i][j]);
+            printf("  %02d  ", newarray[i][j]);
         }
     }
  return;
 }
 
+void createMate(int ***arraypp, int ArraySize)
+{
+    (*arraypp) = malloc(ArraySize*sizeof(int*));
+    if(*arraypp==NULL)
+    {
+        fprintf(stderr,"out of memory\n");
+        exit(-1);
+    }
+
+    for(int i=0; i<ArraySize; i++)
+    {
+        (*arraypp)[i]=malloc(ArraySize*sizeof(int));
+
+        if((*arraypp)[i]==NULL)
+        {
+            fprintf(stderr,"out of memory\n");
+            exit(-1);
+        }
+    }
+
+}
